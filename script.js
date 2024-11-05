@@ -22,16 +22,22 @@ function agregarCompra() {
     }
 }
 
-// Función para calcular recordatorios BNB (cada intervalo mensual)
+// Función para calcular recordatorios BNB en los intervalos 1-7, 15-21, y 22-28 del mes
 function calcularRecordatoriosBNB() {
-    const intervalos = [1, 7, 14, 28];
-    const recordatorios = [];
     const ahora = new Date();
-
-    intervalos.forEach(dia => {
-        const fecha = new Date(ahora.getFullYear(), ahora.getMonth(), dia);
-        recordatorios.push(fecha);
-    });
+    const recordatorios = [];
+    
+    // Primer recordatorio: del 1 al 7
+    let primerRecordatorio = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
+    recordatorios.push(primerRecordatorio);
+    
+    // Segundo recordatorio: del 15 al 21
+    let segundoRecordatorio = new Date(ahora.getFullYear(), ahora.getMonth(), 15);
+    recordatorios.push(segundoRecordatorio);
+    
+    // Tercer recordatorio: del 22 al 28
+    let tercerRecordatorio = new Date(ahora.getFullYear(), ahora.getMonth(), 22);
+    recordatorios.push(tercerRecordatorio);
 
     return recordatorios;
 }
@@ -40,7 +46,7 @@ function calcularRecordatoriosBNB() {
 function calcularRecordatoriosBCP() {
     const ahora = new Date();
     const recordatorios = [];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 4; i++) {  // Calcula 4 recordatorios cada 7 días
         const fecha = new Date(ahora);
         fecha.setDate(ahora.getDate() + i * 7);
         recordatorios.push(fecha);
