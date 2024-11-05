@@ -1,6 +1,6 @@
 // script.js
 
-// Función para verificar si es un nuevo mes y eliminar registros si es necesario
+// Verifica si es un nuevo mes y elimina registros si es necesario
 function verificarMes() {
     const mesActual = new Date().getMonth();
     const mesGuardado = localStorage.getItem("mes");
@@ -68,10 +68,12 @@ function calcularRecordatoriosBCP() {
     return recordatorios;
 }
 
-// Función para mostrar compras guardadas en formato horizontal
+// Función para mostrar compras guardadas en formato de dos columnas
 function mostrarCompras() {
-    const comprasList = document.getElementById("compras-list");
-    comprasList.innerHTML = "";
+    const bnbColumn = document.querySelector("#compras-list .column:nth-child(1)");
+    const bcpColumn = document.querySelector("#compras-list .column:nth-child(2)");
+    bnbColumn.innerHTML = '<div class="column-title">BNB</div>';
+    bcpColumn.innerHTML = '<div class="column-title">BCP</div>';
 
     compras.forEach((compra, index) => {
         const compraDiv = document.createElement("div");
@@ -82,11 +84,15 @@ function mostrarCompras() {
 
         compraDiv.innerHTML = `
             <strong>${compra.nombre}</strong>
-            <p>Banco: ${compra.banco ? compra.banco.toUpperCase() : ''}</p>
             <p>Fecha y Hora: ${fechaCompra}</p>
             <button onclick="activarNotificacionIndividual(${index})">Activar Notificación</button>
         `;
-        comprasList.appendChild(compraDiv);
+
+        if (compra.banco === "bnb") {
+            bnbColumn.appendChild(compraDiv);
+        } else if (compra.banco === "bcp") {
+            bcpColumn.appendChild(compraDiv);
+        }
     });
 }
 
