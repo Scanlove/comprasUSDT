@@ -1,5 +1,7 @@
 // script.js
 
+let compras = JSON.parse(localStorage.getItem("compras")) || [];
+
 // Función para agregar una compra
 function agregarCompra() {
     const nombreCompra = document.getElementById("nombreCompra").value;
@@ -13,7 +15,8 @@ function agregarCompra() {
             recordatorios: banco === 'bnb' ? calcularRecordatoriosBNB() : calcularRecordatoriosBCP()
         };
 
-        guardarCompraLocal(compra);
+        compras.push(compra);
+        localStorage.setItem("compras", JSON.stringify(compras));
         mostrarCompras();
         document.getElementById("nombreCompra").value = ""; // Limpiar input
     }
@@ -45,46 +48,59 @@ function calcularRecordatoriosBCP() {
     return recordatorios;
 }
 
-// Función para guardar en local storage
-function guardarCompraLocal(compra) {
-    let compras = JSON.parse(localStorage.getItem("compras")) || [];
-    compras.push(compra);
-    localStorage.setItem("compras", JSON.stringify(compras));
-}
-
-// Función para mostrar compras guardadas
+// Función para mostrar compras guardadas en formato horizontal
 function mostrarCompras() {
     const comprasList = document.getElementById("compras-list");
     comprasList.innerHTML = "";
 
-    let compras = JSON.parse(localStorage.getItem("compras")) || [];
-    compras.forEach(compra => {
+    compras.forEach((compra, index) => {
         const compraDiv = document.createElement("div");
+        compraDiv.classList.add("compra-item");
         compraDiv.innerHTML = `
-            <h3>${compra.nombre}</h3>
-            <p>Banco: ${compra.banco.toUpperCase()}</p>
-            <p>Fecha de Compra: ${new Date(compra.fecha).toLocaleString()}</p>
-            <p>Próximos Recordatorios:</p>
-            <ul>
-                ${compra.recordatorios.map(fecha => `<li>${new Date(fecha).toLocaleString()}</li>`).join("")}
-            </ul>
+            <strong>${compra.nombre}</strong>
+            <p>${compra.banco.toUpperCase()}</p>
+            <button onclick="activarNotificacionIndividual(${index})">Activar Notificación</button>
         `;
         comprasList.appendChild(compraDiv);
     });
 }
 
-// Función para activar notificaciones (requiere permiso del usuario)
+// Función para activar notificaciones para todas las compras
 function activarNotificaciones() {
     if ('Notification' in window && navigator.serviceWorker) {
         Notification.requestPermission().then(permission => {
             if (permission === 'granted') {
-                alert('Notificaciones activadas.');
+                compras.forEach(compra => {
+                    compra.recordatorios.forEach(fecha => {
+                        programarNotificacion(compra.nombre, fecha);
+                    });
+                });
+                alert('Notificaciones activadas para todas las compras.');
             } else {
                 alert('No se activaron las notificaciones.');
             }
         });
     } else {
         alert('Este navegador no soporta notificaciones.');
+    }
+}
+
+// Función para activar notificación individual para una compra
+function activarNotificacionIndividual(index) {
+    const compra = compras[index];
+    compra.recordatorios.forEach(fecha => {
+        programarNotificacion(compra.nombre, fecha);
+    });
+    alert(`Notificaciones activadas para ${compra.nombre}.`);
+}
+
+// Función para programar una notificación
+function programarNotificacion(nombreCompra, fecha) {
+    const tiempoRestante = fecha - new Date();
+    if (tiempoRestante > 0) {
+        setTimeout(() => {
+            new Notification(`TOCA COMPRAR "${nombreCompra}"`);
+        }, tiempoRestante);
     }
 }
 
