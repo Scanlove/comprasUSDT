@@ -9,9 +9,18 @@
 <body>
     <h1>Recordatorio de Compras</h1>
     <div id="container">
-        <label for="nombre">Nombre de compra:</label>
-        <input type="text" id="nombre">
+        <label for="nombreCompra">Nombre de compra:</label>
+        <input type="text" id="nombreCompra" placeholder="Ej. Supermercado">
+        
+        <label for="banco">Registro de:</label>
+        <select id="banco">
+            <option value="bnb">BNB</option>
+            <option value="bcp">BCP</option>
+        </select>
+        
         <button onclick="agregarCompra()">Agregar</button>
+        <button onclick="activarNotificaciones()">Activar Notificación</button>
+        
         <div id="compras-list"></div>
     </div>
     <script src="script.js"></script>
