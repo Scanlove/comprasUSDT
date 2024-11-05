@@ -7,7 +7,7 @@ function agregarCompra() {
     const nombreCompra = document.getElementById("nombreCompra").value;
     const banco = document.getElementById("banco").value;
 
-    if (nombreCompra) {
+    if (nombreCompra && banco) {
         const compra = {
             nombre: nombreCompra,
             banco: banco,
@@ -58,7 +58,7 @@ function mostrarCompras() {
         compraDiv.classList.add("compra-item");
         compraDiv.innerHTML = `
             <strong>${compra.nombre}</strong>
-            <p>${compra.banco.toUpperCase()}</p>
+            <p>${compra.banco ? compra.banco.toUpperCase() : ''}</p>
             <button onclick="activarNotificacionIndividual(${index})">Activar Notificación</button>
         `;
         comprasList.appendChild(compraDiv);
