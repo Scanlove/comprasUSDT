@@ -1,6 +1,20 @@
 // script.js
 
+// Función para verificar si es un nuevo mes y eliminar registros si es necesario
+function verificarMes() {
+    const mesActual = new Date().getMonth();
+    const mesGuardado = localStorage.getItem("mes");
+
+    if (mesGuardado === null || parseInt(mesGuardado) !== mesActual) {
+        // Nuevo mes detectado, borrar registros
+        localStorage.setItem("mes", mesActual); // Guardar el mes actual
+        localStorage.removeItem("compras");     // Eliminar registros de compras
+        compras = [];                           // Reiniciar la lista de compras
+    }
+}
+
 let compras = JSON.parse(localStorage.getItem("compras")) || [];
+verificarMes();  // Llamada para verificar el mes al cargar la página
 
 // Función para agregar una compra
 function agregarCompra() {
