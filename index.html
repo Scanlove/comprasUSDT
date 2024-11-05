@@ -21,7 +21,17 @@
         <button onclick="agregarCompra()">Agregar</button>
         <button onclick="activarNotificaciones()">Activar Notificaciones para todas las compras</button>
         
-        <div id="compras-list" class="horizontal-list"></div>
+        <!-- Contenedor de compras en dos columnas -->
+        <div id="compras-list">
+            <div class="column">
+                <div class="column-title">BNB</div>
+                <!-- Los registros de BNB se mostrarán aquí -->
+            </div>
+            <div class="column">
+                <div class="column-title">BCP</div>
+                <!-- Los registros de BCP se mostrarán aquí -->
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
