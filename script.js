@@ -11,7 +11,7 @@ function agregarCompra() {
         const compra = {
             nombre: nombreCompra,
             banco: banco,
-            fecha: new Date(),
+            fecha: new Date(),  // Guardamos la fecha actual de la compra
             recordatorios: banco === 'bnb' ? calcularRecordatoriosBNB() : calcularRecordatoriosBCP()
         };
 
@@ -56,9 +56,14 @@ function mostrarCompras() {
     compras.forEach((compra, index) => {
         const compraDiv = document.createElement("div");
         compraDiv.classList.add("compra-item");
+
+        // Obtener la fecha y hora en formato legible
+        const fechaCompra = new Date(compra.fecha).toLocaleString();
+
         compraDiv.innerHTML = `
             <strong>${compra.nombre}</strong>
-            <p>${compra.banco ? compra.banco.toUpperCase() : ''}</p>
+            <p>Banco: ${compra.banco ? compra.banco.toUpperCase() : ''}</p>
+            <p>Fecha y Hora: ${fechaCompra}</p>
             <button onclick="activarNotificacionIndividual(${index})">Activar Notificación</button>
         `;
         comprasList.appendChild(compraDiv);
